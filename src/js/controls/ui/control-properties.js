@@ -4,6 +4,6 @@ this.ControlPropertiesControl = Control.extend({
         this.selectedControl = undefined;
     },
     _buildDom: function() {
-        
+        return $('<form/>').addClass('form-horizontal');
     }
 });

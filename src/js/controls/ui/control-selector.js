@@ -1,15 +1,20 @@
 this.ControlSelectorControl = Control.extend({
     constructor: function(name) {
         this.base('ControlSelector', name);
-        ControlIndex.addListener(this);
-        this._changeListeners = [];
+        ControlManager.addControlAddedListener(this);
+        ControlManager.addOnControlPropertyChangeListener(this);
+        
+        this.setWidth('100%');
     },
     _buildDom: function() {
         var sel = $('<select/>');
-        for (var name in ControlIndex.controls) {
+        for (var name in ControlManager.controls) {
             if (name !== this.getName()) {
-                var ctrl = ControlIndex.controls[name];
+                var ctrl = ControlManager.controls[name];
                 $('<option/>').attr('value',name).text(ctrl.getType()+'.'+name).appendTo(sel);
+                if (ControlManager.selected === undefined) {
+                    ControlManager.selected = ctrl;
+                }
             }
         }
         sel.on('change', this.onSelectionChange);
@@ -24,15 +29,16 @@ this.ControlSelectorControl = Control.extend({
     },
     onSelectionChange: function(e) {
         var name = $(e.target).val(),
-            ctrl = ControlIndex.getByName(name);
-        for (var i = 0; i < this._changeListeners.length; i++) {
-            this._changeListeners[i].onControlSelected(ctrl);
-        }
+            ctrl = ControlManager.getByName(name);
+        ControlManager.selected = ctrl;
     },
-    addOnChangeListener: function(listener) {
-        if (listener.onControlSelected !== undefined) {
-            this._changeListeners.push(listener);
+    onControlPropertyChange: function(ctrl, name, value) {
+        if (name === 'name') {
+            var opt = this._domHandle.find('option[value='+ctrl.getName()+']');
+            if (opt !== undefined) {
+                opt.attr('value', value);
+                opt.text(ctrl.getType()+'.'+value);
+            }
         }
-        return this;
     }
 });

@@ -10,20 +10,8 @@ this.TicketCanvasControl = Control.extend({
                 'position':'relative',
                 'z-index': 0,
                 'border': '1px solid #000',
-                'background': '#FFF'
+                'background': '#FFF',
+                'margin': '0 auto'
             });
-    },
-    mount: function(selector) {
-        this.base(selector);
-
-        if (this.getParentDomHandle() !== undefined) {
-            this.getParentDomHandle().css({
-                'width': '100%',
-                'overflow': 'auto',
-                'height': 'auto'
-            });
-        }
-
-        return this;
     }
 });
