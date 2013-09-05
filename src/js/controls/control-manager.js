@@ -138,5 +138,14 @@ var ControlManager = {
             case 'control-properties': return new ControlPropertiesControl(name);
         }
         return undefined;
+    },
+    
+    setSelected: function(ctrl) {
+        if ((ctrl instanceof Control || typeof ctrl === "String") && (this.selected === undefined || (ctrl instanceof Control && this.selected.getName() !== ctrl.getName()) || (typeof ctrl === "String" && this.selected.getName() !== ctrl))) {
+            this.selected = ctrl;
+            for (var i = 0; i < this.selectedListeners.length; i++) {
+                this.selectedListeners[i].onControlSelectionChange(ctrl);
+            }
+        }
     }
 };

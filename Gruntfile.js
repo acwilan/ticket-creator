@@ -164,7 +164,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     '<%= compile_dir %>/assets/js/libs.min.js': '<%= concat.compile_vendor_js.dest %>',
-                    '<%= compile_dir %>/assest/js/<%= pkg.name %>.min.js': '<%= concat.compile_js.dest %>' 
+                    '<%= compile_dir %>/assets/js/<%= pkg.name %>.min.js': '<%= concat.compile_js.dest %>' 
                 }
             }
         },
@@ -251,6 +251,8 @@ module.exports = function(grunt) {
                 src: [
                     '<%= concat.compile_vendor_js.dest %>',
                     '<%= concat.compile_js.dest %>',
+                    //'<%= compile_dir %>/assets/js/libs.min.js',
+                    //'<%= compile_dir %>/assets/js/<%= pkg.name %>.min.js',
                     '<%= recess.compile.dest %>',
                     '<%= compile_dir %>/assets/css/libs.css'// '<%= recess.compile_vendor.dest %>'
                 ]
@@ -269,7 +271,7 @@ module.exports = function(grunt) {
     
     grunt.registerTask('compile', [
         'recess:compile', 'recess:compile_vendor', 'copy:compile_vendor_assets_jqui', 'copy:compile_vendor_assets_sel2', 'copy:compile_vendor_fonts',
-        'concat:compile_js', 'concat:compile_vendor_js', 'concat:compile_vendor_css', 
+        'concat:compile_js', 'concat:compile_vendor_js', 'concat:compile_vendor_css', 'uglify',
         'index:compile'
     ]);
     

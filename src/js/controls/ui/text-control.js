@@ -1,6 +1,6 @@
 this.TextControl = Control.extend({
     constructor: function(name) {
-        this.base('TextControl', name);
+        this.base('Text', name);
         
         this.setWidth('auto');
         this.setHeight('auto');
@@ -8,7 +8,8 @@ this.TextControl = Control.extend({
         this.setTop(0);
         
         this.setText('');
-        this.setFontSize(5);
+        this.setFontSize(10);
+        this.setOrientation('horizontal');
     },
     _buildDom: function() {
         var container = $('<div/>').addClass('text-container').css({
@@ -39,17 +40,22 @@ this.TextControl = Control.extend({
         return this;
     },
     getFontSize: function() {
-        return this.getProperty('font-size').replace('mm', '');
+        return this.getProperty('font-size').replace('pt', '');
     },
     setFontSize: function(val) {
         this.setProperty('font-size', val);
-        this._domHandle.children().css('font-size', val+'mm');
+        this._domHandle.children().css('font-size', val+'pt');
         return this;
     },
     getOrientation: function() {
         return this.getProperty('orientation');
     },
     setOrientation: function(val) {
-        this.setProperty('orientation', val);
+        val = val.toLowerCase();
+        if (val === 'horizontal' || val === 'vertical') {
+            this.setProperty('orientation', val);
+            this._domHandle.removeClass('text-orientation-vertical text-orientation-horizontal');
+            this._domHandle.addClass('text-orientation-'+val);
+        }
     }
 });

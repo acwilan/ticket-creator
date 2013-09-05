@@ -3,6 +3,8 @@
  * @description This is the base object used for every implementation of controls
  * @type Object
  * @extends Base
+ * @requires Base
+ * @requires ControlManager
  */
 this.Control = Base.extend({
     
@@ -224,14 +226,17 @@ this.Control = Base.extend({
      * @description Sets the width property
      * 
      * @param {Number|String} val The value for the width, in milimeters or set to 'auto' if none
+     * @param {Boolean} updateCss If set to true or undefined, update the DOM CSS
      * @returns {Object<Control>} The Control object for method chaining
      */
-    setWidth: function(val) {
+    setWidth: function(val, updateCss) {
         this.setProperty('width', val);
-        if (typeof val === "number") {
-            this._domHandle.css('width',val+'mm');
-        } else {
-            this._domHandle.css('width',val);
+        if (updateCss === undefined || updateCss) {
+            if (typeof val === "number") {
+                this._domHandle.css('width',val+'mm');
+            } else {
+                this._domHandle.css('width',val);
+            }
         }
         return this;
     },
@@ -251,14 +256,17 @@ this.Control = Base.extend({
      * @description Sets the height property
      * 
      * @param {Number|String} val The value for the height, set in milimeters, or 'auto' for the default
+     * @param {Boolean} updateCss If set to true, update the DOM's CSS
      * @returns {Object<Control>} The Control object for method chaining
      */
-    setHeight: function(val) {
+    setHeight: function(val, updateCss) {
         this.setProperty('height', val);
-        if (typeof val === "number") {
-            this._domHandle.css('height',val+'mm');
-        } else {
-            this._domHandle.css('height',val);
+        if (updateCss === undefined || updateCss) {
+            if (typeof val === "number") {
+                this._domHandle.css('height',val+'mm');
+            } else {
+                this._domHandle.css('height',val);
+            }
         }
         return this;
     },
@@ -304,6 +312,7 @@ this.Control = Base.extend({
      * @description Sets the left property
      * 
      * @param {Number} val The left value, in milimeters
+     * @param {Boolean} updateCss Optional, set to true if update also the css property
      * @returns {Object<Control>} The Control object for method chaining
      */
     setLeft: function(val, updateCss) {
@@ -325,5 +334,11 @@ this.Control = Base.extend({
             this._changeListeners.push(listener);
         }
         return this;
+    },
+    
+    forEachProperty: function(fn) {
+        for (var name in this._properties) {
+            fn(name, this._properties[name]);
+        }
     }
 });

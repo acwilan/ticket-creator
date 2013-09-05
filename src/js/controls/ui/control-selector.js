@@ -11,9 +11,11 @@ this.ControlSelectorControl = Control.extend({
         for (var name in ControlManager.controls) {
             if (name !== this.getName()) {
                 var ctrl = ControlManager.controls[name];
-                $('<option/>').attr('value',name).text(ctrl.getType()+'.'+name).appendTo(sel);
-                if (ControlManager.selected === undefined) {
-                    ControlManager.selected = ctrl;
+                if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas') {
+                    $('<option/>').attr('value',name).text(ctrl.getType()+'.'+name).appendTo(sel);
+                    if (ControlManager.selected === undefined) {
+                        ControlManager.setSelected(ctrl);
+                    }
                 }
             }
         }
@@ -22,15 +24,17 @@ this.ControlSelectorControl = Control.extend({
         return sel;
     },
     onControlAdded: function(control) {
-        if (control instanceof Control && control.getName() !== this.getName()) {
+        if (control instanceof Control && control.getName() !== this.getName() && (control.getType() === 'Text' || control.getType() === 'TicketCanvas')) {
             $('<option/>').attr('value',control.getName()).text(control.getType()+'.'+control.getName())
                 .appendTo(this._domHandle);
         }
     },
     onSelectionChange: function(e) {
         var name = $(e.target).val(),
-            ctrl = ControlManager.getByName(name);
-        ControlManager.selected = ctrl;
+            ctrl = ControlManager.getControlByName(name);
+        if (ctrl !== undefined) {
+            ControlManager.setSelected(ctrl);
+        }
     },
     onControlPropertyChange: function(ctrl, name, value) {
         if (name === 'name') {
