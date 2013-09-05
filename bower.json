@@ -1,0 +1,25 @@
+{
+  "name": "ticket-creator",
+  "version": "0.0.1",
+  "homepage": "https://github.com/acwilan/ticket-creator",
+  "authors": [
+    "Andres Rovira <andres.rovira@gmail.com>"
+  ],
+  "description": "Ticket Creator",
+  "license": "Commercial",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.0.3",
+    "jquery-ui": "~1.10.3",
+    "bootstrap": "~3.0.0",
+    "select2": "~3.4.2",
+    "select2-bootstrap-css": "~1.2.0"
+  }
+}

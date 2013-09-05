@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Ticket Creator sample</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        
+        <% styles.forEach( function ( file ) { %>
+        <link type="text/css" rel="stylesheet" href="<%= file %>" /><% }); %>
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>Ticket Creator</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapseUnbound" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">Unbound controls</a>
+                                </h4>
+                            </div>
+                            <div id="collapseUnbound" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item add-control" data-type="text"><i class="glyphicon glyphicon-font"></i> Text</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a href="#collapseBound" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">Bound controls</a>
+                                </h4>
+                            </div>
+                            <div id="collapseBound" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item"><i class="glyphicon glyphicon-font"></i> Text</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Preview</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div id="canvas">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Properties</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div id="control-selector"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% scripts.forEach( function ( file ) { %>
+        <script type="text/javascript" src="<%= file %>"></script><% }); %>
+    </body>
+</html>
