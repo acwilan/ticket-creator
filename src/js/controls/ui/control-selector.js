@@ -3,6 +3,7 @@ this.ControlSelectorControl = Control.extend({
         this.base('ControlSelector', name);
         ControlManager.addControlAddedListener(this);
         ControlManager.addOnControlPropertyChangeListener(this);
+        ControlManager.addOnControlSelectionChangeListener(this);
         
         this.setWidth('100%');
     },
@@ -30,10 +31,14 @@ this.ControlSelectorControl = Control.extend({
         }
     },
     onSelectionChange: function(e) {
-        var name = $(e.target).val(),
-            ctrl = ControlManager.getControlByName(name);
-        if (ctrl !== undefined) {
-            ControlManager.setSelected(ctrl);
+        if (this.externalSelectionChange === undefined || !this.externalSelectionChange) {
+            var name = $(e.target).val(),
+                ctrl = ControlManager.getControlByName(name);
+            if (ctrl !== undefined) {
+                ControlManager.setSelected(ctrl);
+            }
+        } else {
+            this.externalSelectionChange = false;
         }
     },
     onControlPropertyChange: function(ctrl, name, value) {
@@ -44,5 +49,9 @@ this.ControlSelectorControl = Control.extend({
                 opt.text(ctrl.getType()+'.'+value);
             }
         }
+    },
+    onControlSelectionChange: function(ctrl) {
+        this.externalSelectionChange = true;
+        this._domHandle.val(ctrl.getName());
     }
 });

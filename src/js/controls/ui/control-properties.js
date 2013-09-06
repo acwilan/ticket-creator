@@ -9,28 +9,35 @@ this.ControlPropertiesControl = Control.extend({
         return $('<form/>').addClass('form-horizontal col-md-11').attr('role','form');
     },
     onControlSelectionChange: function(ctrl) {
-        var domObj = this._domHandle;
+        var domObj = this._domHandle,
+            obj = this;
         
         this.selectedControl = ctrl;
         this._domHandle.children().remove();
         
         ctrl.forEachProperty(function(name, val) {
-            var id = ctrl.getName()+'-'+name;
-            $('<div/>').addClass('form-group').append(
-                $('<label/>')/*.addClass('col-md-4 control-label')*/.attr('for',id).text(name),
-                //$('<div/>').addClass('col-md-8').append(
-                    $('<input/>').attr({
-                        'id': id,
-                        'type': 'text',
-                        'value': val
-                    }).addClass('form-control')
-                //)
-            ).appendTo(domObj);
+            if (obj.propertiesMeta[name] === undefined || !obj.propertiesMeta[name].hidden) {
+                var id = ctrl.getName()+'-'+name;
+                $('<div/>').addClass('form-group').append(
+                    $('<label/>')/*.addClass('col-md-4 control-label')*/.attr('for',id).text(name),
+                    //$('<div/>').addClass('col-md-8').append(
+                        $('<input/>').attr({
+                            'id': id,
+                            'type': 'text',
+                            'value': val
+                        }).addClass('form-control').on('change', function(e) {
+                            if (ctrl[('set-'+name).toCamelCase()] !== undefined) {
+                                ctrl[('set-'+name).toCamelCase()]($(e.target).val());
+                            }
+                        })
+                    //)
+                ).appendTo(domObj);
+            }
         });
         
-        $('<div/>').addClass('btn-group').append(
+        /*$('<div/>').addClass('btn-group').append(
             $('<button/>').addClass('btn btn-primary').text('Save')
-        ).appendTo(domObj);
+        ).appendTo(domObj);*/
     },
     onControlPropertyChange: function(ctrl, name, value) {
         if (this.selectedControl !== undefined && this.selectedControl.getName() === name) {
@@ -39,6 +46,11 @@ this.ControlPropertiesControl = Control.extend({
             if (input !== undefined) {
                 input.val(value);
             }
+        }
+    },
+    propertiesMeta: {
+        type: {
+            hidden: true
         }
     }
 });

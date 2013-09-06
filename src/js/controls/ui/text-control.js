@@ -21,13 +21,25 @@ this.TextControl = Control.extend({
             $('<span/>').addClass('text')
         );
         var obj = this;
-        container.draggable({
-            containment: "parent",
-            stop: function(e, ui) {
-                obj.setTop(ui.position.top, false);
-                obj.setLeft(ui.position.left, false);
-            }
-        });
+        
+        if (container !== undefined) {
+            container.draggable({
+                containment: "parent",
+                stop: function(e, ui) {
+                    ControlManager.setSelected(obj);
+                    obj.setTop(ui.position.top, false);
+                    obj.setLeft(ui.position.left, false);
+                }
+            })
+            .on('dblclick', function(e) {
+                e.preventDefault();
+                obj.toggleOrientation();
+            })
+            .on('click', function(e) {
+                ControlManager.setSelected(obj);
+                e.stopPropagation();
+            });
+        }
         return container;
     },
     getText: function() {
@@ -56,6 +68,13 @@ this.TextControl = Control.extend({
             this.setProperty('orientation', val);
             this._domHandle.removeClass('text-orientation-vertical text-orientation-horizontal');
             this._domHandle.addClass('text-orientation-'+val);
+        }
+    },
+    toggleOrientation: function() {
+        if (this.getOrientation() === 'horizontal') {
+            this.setOrientation('vertical');
+        } else {
+            this.setOrientation('horizontal');
         }
     }
 });

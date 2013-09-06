@@ -4,6 +4,14 @@ this.TicketCanvasControl = Control.extend({
         this.base('TicketCanvas', name);
         this.setWidth(80);
         this.setHeight(165);
+        
+        if (this._domHandle !== undefined) {
+            var instance = this;
+            this._domHandle.on('click', function(e) {
+                ControlManager.setSelected(instance);
+                e.stopPropagation();
+            });
+        }
     },
     _buildDom: function() {
         return $('<div/>').css({
