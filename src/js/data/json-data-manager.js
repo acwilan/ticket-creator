@@ -3,8 +3,7 @@ var JsonDataManager = DataManagerBase.extend({
         this.base(str);
     },
     _parse: function(str) {
-        this._dataObj = $.parseJSON(str);
-        console.dir(this._dataObj);
+        this._dataObj = jQuery.parseJSON(str);
         return this._dataObj !== false;
     },
     getDataColumns: function() {
@@ -14,7 +13,7 @@ var JsonDataManager = DataManagerBase.extend({
                 if (/^\d+$/.test(prop)) { // it's an array
                     var obj = this._dataObj[prop];
                     for (var p in obj) {
-                        cols.push(prop);
+                        cols.push(p);
                     }
                     break;
                 } else { // it's an object

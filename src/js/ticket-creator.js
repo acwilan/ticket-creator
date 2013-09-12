@@ -17,7 +17,7 @@ $('#txt-data-input').on('focusin', function() {
         if (!origHeight) {
             $(this).data('orig-height', $(this).height());
         }
-        $(this).animate({height: '500px'}, 500);
+        $(this).animate({height: '300px'}, 500);
     //}
 }).on('focusout', function() {
     //if ($(this).val() === '') {
@@ -38,3 +38,5 @@ $('#btn-update-data-input').on('click', function() {
         }
     }
 });
+
+$('#btn-update-data-input').trigger('click');
