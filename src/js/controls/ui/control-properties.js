@@ -9,15 +9,23 @@ this.ControlPropertiesControl = Control.extend({
         return $('<form/>').addClass('form-horizontal col-md-11').attr('role','form');
     },
     onControlSelectionChange: function(ctrl) {
+        this._domHandle.children().remove();
+        if (ctrl === undefined) {
+            return;
+        }
         if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas') {
             var domObj = this._domHandle,
                 obj = this;
 
             this.selectedControl = ctrl;
-            this._domHandle.children().remove();
 
             ctrl.forEachProperty(function(name, val) {
-                if (obj.propertiesMeta[name] === undefined || !obj.propertiesMeta[name].hidden) {
+                var type = ctrl.getType().toLowerCase(),
+                    hidden = (obj.propertiesMeta[type] !== undefined && obj.propertiesMeta[type][name] !== undefined && obj.propertiesMeta[type][name].hidden) ||
+                             (obj.propertiesMeta.all[name] !== undefined && obj.propertiesMeta.all[name].hidden),
+                    disabled = (obj.propertiesMeta[type] !== undefined && obj.propertiesMeta[type][name] !== undefined && obj.propertiesMeta[type][name].disabled) ||
+                             (obj.propertiesMeta.all[name] !== undefined && obj.propertiesMeta.all[name].disabled);
+                if (!hidden) {
                     var id = ctrl.getName()+'-'+name,
                         input = $('<input/>').attr({
                                 'id': id,
@@ -28,7 +36,7 @@ this.ControlPropertiesControl = Control.extend({
                                     ctrl[('set-'+name).toCamelCase()]($(e.target).val());
                                 }
                             });
-                    if (obj.propertiesMeta[name] !== undefined && obj.propertiesMeta[name].disabled) {
+                    if (disabled) {
                         input.attr('disabled', 'disabled');
                     }
                     $('<div/>').addClass('form-group').append(
@@ -40,28 +48,44 @@ this.ControlPropertiesControl = Control.extend({
                 }
             });
 
-            /*$('<div/>').addClass('btn-group').append(
-                $('<button/>').addClass('btn btn-primary').text('Save')
-            ).appendTo(domObj);*/
-        }
-    },
-    onControlPropertyChange: function(ctrl, name, value) {
-        if (this.selectedControl !== undefined && this.selectedControl.getName() === name) {
-            var id = ctrl.getName()+'-'+name,
-                input = this._domHandle.find('#'+id);
-            if (input !== undefined) {
-                input.val(value);
+            if (ctrl.allowDelete) {
+                $('<div/>').addClass('btn-group pull-right').append(
+                    $('<button/>').addClass('btn btn-danger').text('Delete')
+                ).on('click', this.deleteControl).appendTo(domObj);
             }
         }
     },
+    onControlPropertyChange: function(ctrl, name, value) {
+        var id = ctrl.getName()+'-'+name,
+            input = this._domHandle.find('#'+id);
+        if (input !== undefined) {
+            input.val(value);
+        }
+    },
     propertiesMeta: {
-        //all: {
+        all: {
             type: {
                 hidden: true
             },
             name: {
                 disabled: true
             }
-        //}
+        },
+        text: {
+            orientation: {
+                disabled: true
+            },
+            width: {
+                hidden: true
+            },
+            height: {
+                hidden: true
+            }
+        }
+    },
+    deleteControl: function(e) {
+        e.preventDefault();
+        var ctrl = ControlManager.selected;
+        ControlManager.deleteControl(ctrl.getType(), ctrl.getName());
     }
 });

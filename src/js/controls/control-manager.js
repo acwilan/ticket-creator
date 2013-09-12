@@ -11,6 +11,7 @@ var ControlManager = {
     addListeners: [],
     changeListeners: [],
     selectedListeners: [],
+    deleteListeners: [],
     
     /**
      * @static
@@ -24,6 +25,7 @@ var ControlManager = {
      */
     addControl: function(type, name, ctrl) {
         if (ctrl instanceof Control && this.controls[name] === undefined) {
+            ctrl.addOnPropertyChangeListener(this);
             this.controls[name] = ctrl;
             if (this.controlsByType[type] === undefined) {
                 this.controlsByType[type] = [];
@@ -34,7 +36,7 @@ var ControlManager = {
                 this.addListeners[i].onControlAdded(ctrl);
             }
             
-            ControlManager.setSelected(ctrl);
+            //ControlManager.setSelected(ctrl);
         }
         return this;
     },
@@ -148,6 +150,32 @@ var ControlManager = {
             this.selected = ctrl;
             for (var i = 0; i < this.selectedListeners.length; i++) {
                 this.selectedListeners[i].onControlSelectionChange(ctrl);
+            }
+        }
+    },
+    
+    addOnControlDeletedListener: function(listener) {
+        if (listener.onControlDeleted !== undefined) {
+            this.deleteListeners.push(listener);
+        }
+        return this;
+    },
+    
+    deleteControl: function(type, name) {
+        if (this.controls[name] !== undefined) {
+            var prev;
+            this.controls[name].removeHandle();
+            delete this.controls[name];
+            for (var j = 0; j < this.controlsByType[type].length; j++) {
+                if (this.controlsByType[type][j] === name) {
+                    delete this.controlsByType[type][j];
+                    break;
+                }
+                prev = this.controls[this.controlsByType[type][j]];
+            }
+            this.setSelected(prev);
+            for (var i = 0; i < this.deleteListeners.length; i++) {
+                this.deleteListeners[i].onControlDeleted(type, name);
             }
         }
     }

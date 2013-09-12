@@ -8,6 +8,8 @@
  */
 this.Control = Base.extend({
     
+    allowDelete: false,
+    
     /**
      * @name Control.constructor
      * @constructor
@@ -24,6 +26,15 @@ this.Control = Base.extend({
         this._domHandle = this._buildDom();
         this._isMounted = false;
         this._parentDomHandle = undefined;
+        
+        if (this._domHandle !== undefined) {
+            this._domHandle.on('keydown', function(e) {
+                console.dir(e);
+                if (e.which === 46) { // hit delete key
+                    //this
+                }
+            });
+        }
         
         this._properties.type = type !== undefined ? type : 'Control';
         
@@ -339,6 +350,13 @@ this.Control = Base.extend({
     forEachProperty: function(fn) {
         for (var name in this._properties) {
             fn(name, this._properties[name]);
+        }
+    },
+    
+    removeHandle: function() {
+        if (this._domHandle !== undefined) {
+            this._domHandle.remove();
+            this._domHandle = undefined;
         }
     }
 });

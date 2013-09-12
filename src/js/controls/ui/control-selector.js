@@ -4,6 +4,7 @@ this.ControlSelectorControl = Control.extend({
         ControlManager.addControlAddedListener(this);
         ControlManager.addOnControlPropertyChangeListener(this);
         ControlManager.addOnControlSelectionChangeListener(this);
+        ControlManager.addOnControlDeletedListener(this);
         
         this.setWidth('100%');
     },
@@ -55,5 +56,8 @@ this.ControlSelectorControl = Control.extend({
             this.externalSelectionChange = true;
             this._domHandle.val(ctrl.getName());
         }
+    },
+    onControlDeleted: function(type, name) {
+        this._domHandle.find('option[value='+name+']').remove();
     }
 });

@@ -1,4 +1,5 @@
 this.TextControl = Control.extend({
+    allowDelete: true,
     constructor: function(name) {
         this.base('Text', name);
         
@@ -26,9 +27,11 @@ this.TextControl = Control.extend({
             container.draggable({
                 containment: "parent",
                 stop: function(e, ui) {
+                    var x = ScreenUtils.getMilimetersFromPixels(ui.position.left),
+                        y = ScreenUtils.getMilimetersFromPixels(ui.position.top);
                     ControlManager.setSelected(obj);
-                    obj.setTop(ui.position.top, false);
-                    obj.setLeft(ui.position.left, false);
+                    obj.setTop(y, false);
+                    obj.setLeft(x, false);
                 }
             })
             .on('dblclick', function(e) {

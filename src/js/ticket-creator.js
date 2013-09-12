@@ -32,7 +32,6 @@ $('#btn-update-data-input').on('click', function() {
     myDataManager = DataManagerFactory.getDataManager(data);
     if (myDataManager !== undefined) {
         var cols = myDataManager.getDataColumns();
-        console.dir(cols);
         if (cols && myDataTree) {
             myDataTree.buildTree(cols);
         }
