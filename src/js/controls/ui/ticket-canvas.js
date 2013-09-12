@@ -21,5 +21,14 @@ this.TicketCanvasControl = Control.extend({
                 'background': '#FFF',
                 'margin': '0 auto'
             });
+    },
+    getBackground: function() {
+        var bgProp = this.getProperty('background'),
+            regMatch = bgProp.match(/url\((.*)\)/i),
+            bg = regMatch.length > 1 ? regMatch[1] : undefined;
+        return bg;
+    },
+    setBackground: function(val) {
+        this.setProperty('background','url: ('+val+') left top no-repeat');
     }
 });

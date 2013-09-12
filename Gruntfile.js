@@ -94,6 +94,19 @@ module.exports = function(grunt) {
                     }
                 ]
             },
+            build_vendor_assets_jstree: {
+                files: [
+                    {
+                        src: [
+                            'bower_components/jstree/dist/themes/*.*',
+                            '!bower_components/jstree/dist/themes/*.css'
+                        ],
+                        dest: '<%= build_dir %>/assets/css',
+                        cwd: '.',
+                        expand: true
+                    }
+                ]
+            },
             compile_vendor_assets_jqui: {
                 files: [
                     {
@@ -110,6 +123,16 @@ module.exports = function(grunt) {
                         src: ['*.png','*.gif','*.jpg'],
                         dest: '<%= compile_dir %>/assets/css',
                         cwd: '<%= build_dir %>/assets/css/bower_components/select2',
+                        expand: true
+                    }
+                ]
+            },
+            compile_vendor_assets_jstree: {
+                files: [
+                    {
+                        src: ['*.png','*.gif','*.jpg'],
+                        dest: '<%= compile_dir %>/assets/css',
+                        cwd: '<%= build_dir %>/assets/css/bower_components/jstree/dist/themes',
                         expand: true
                     }
                 ]
@@ -266,13 +289,15 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'clean', 'jshint', 'concat:build_vendor_less', 'recess:build', 'recess:build_vendor',
         'copy:build_appjs', 'copy:build_vendor_js', 'copy:build_vendor_css', 'copy:build_vendor_assets_jqui', 
-        'copy:build_vendor_assets_sel2', 'copy:build_vendor_fonts', 'index:build'
+        'copy:build_vendor_assets_sel2', 'copy:build_vendor_assets_jstree',
+        'copy:build_vendor_fonts', 'index:build'
     ]);
     
     grunt.registerTask('compile', [
-        'recess:compile', 'recess:compile_vendor', 'copy:compile_vendor_assets_jqui', 'copy:compile_vendor_assets_sel2', 'copy:compile_vendor_fonts',
-        'concat:compile_js', 'concat:compile_vendor_js', 'concat:compile_vendor_css', 'uglify',
-        'index:compile'
+        'recess:compile', 'recess:compile_vendor', 'copy:compile_vendor_assets_jqui', 'copy:compile_vendor_assets_sel2', 
+        'copy:compile_vendor_assets_jstree', 'copy:compile_vendor_fonts',
+        'concat:compile_js', 'concat:compile_vendor_js', 'concat:compile_vendor_css', 
+        'uglify', 'index:compile'
     ]);
     
     function filterForJS(files) {

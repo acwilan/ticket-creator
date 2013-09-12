@@ -51,7 +51,9 @@ this.ControlSelectorControl = Control.extend({
         }
     },
     onControlSelectionChange: function(ctrl) {
-        this.externalSelectionChange = true;
-        this._domHandle.val(ctrl.getName());
+        if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas') {
+            this.externalSelectionChange = true;
+            this._domHandle.val(ctrl.getName());
+        }
     }
 });

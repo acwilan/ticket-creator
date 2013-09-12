@@ -232,7 +232,7 @@ this.Control = Base.extend({
     setWidth: function(val, updateCss) {
         this.setProperty('width', val);
         if (updateCss === undefined || updateCss) {
-            if (typeof val === "number") {
+            if (Number.isNumber(val)) {
                 this._domHandle.css('width',val+'mm');
             } else {
                 this._domHandle.css('width',val);
@@ -262,7 +262,7 @@ this.Control = Base.extend({
     setHeight: function(val, updateCss) {
         this.setProperty('height', val);
         if (updateCss === undefined || updateCss) {
-            if (typeof val === "number") {
+            if (Number.isNumber(val)) {
                 this._domHandle.css('height',val+'mm');
             } else {
                 this._domHandle.css('height',val);

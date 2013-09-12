@@ -32,13 +32,15 @@ module.exports = {
             'bower_components/bootstrap/js/tooltip.js',
             'bower_components/bootstrap/js/tab.js',
             'bower_components/select2/select2.js',
-            'bower_components/select2/select2_locale_en.js.template'
+            'bower_components/select2/select2_locale_en.js.template',
+            'bower_components/jstree/dist/jstree.js'
         ],
         css: [
             'bower_components/jquery-ui/themes/<%= pkg.theme %>/jquery-ui.css',
             'bower_components/jquery-ui/themes/<%= pkg.theme %>/jquery.ui.theme.css',
             'bower_components/select2/select2.css',
-            'bower_components/select2-bootstrap-css/select2-bootstrap.css'
+            'bower_components/select2-bootstrap-css/select2-bootstrap.css',
+            'bower_components/jstree/dist/themes/style.css'
         ],
         less: [
             'bower_components/bootstrap/less/variables.less',
@@ -80,7 +82,9 @@ module.exports = {
             'bower_components/jquery-ui/themes/<%= pkg.theme %>/images/*.*',
             'bower_components/select2/select2-spinner.gif',
             'bower_components/select2/select2.png',
-            'bower_components/select2/select2x2.png'
+            'bower_components/select2/select2x2.png',
+            'bower_components/jstree/dist/themes/*.*',
+            'bower_components/jstree/dist/themes/!*.css'
         ]
     }
 };

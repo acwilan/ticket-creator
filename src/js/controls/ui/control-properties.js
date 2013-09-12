@@ -17,11 +17,8 @@ this.ControlPropertiesControl = Control.extend({
         
         ctrl.forEachProperty(function(name, val) {
             if (obj.propertiesMeta[name] === undefined || !obj.propertiesMeta[name].hidden) {
-                var id = ctrl.getName()+'-'+name;
-                $('<div/>').addClass('form-group').append(
-                    $('<label/>')/*.addClass('col-md-4 control-label')*/.attr('for',id).text(name),
-                    //$('<div/>').addClass('col-md-8').append(
-                        $('<input/>').attr({
+                var id = ctrl.getName()+'-'+name,
+                    input = $('<input/>').attr({
                             'id': id,
                             'type': 'text',
                             'value': val
@@ -29,7 +26,14 @@ this.ControlPropertiesControl = Control.extend({
                             if (ctrl[('set-'+name).toCamelCase()] !== undefined) {
                                 ctrl[('set-'+name).toCamelCase()]($(e.target).val());
                             }
-                        })
+                        });
+                if (obj.propertiesMeta[name] !== undefined && obj.propertiesMeta[name].disabled) {
+                    input.attr('disabled', 'disabled');
+                }
+                $('<div/>').addClass('form-group').append(
+                    $('<label/>')/*.addClass('col-md-4 control-label')*/.attr('for',id).text(name),
+                    //$('<div/>').addClass('col-md-8').append(
+                        input
                     //)
                 ).appendTo(domObj);
             }
@@ -49,8 +53,13 @@ this.ControlPropertiesControl = Control.extend({
         }
     },
     propertiesMeta: {
-        type: {
-            hidden: true
+        all: {
+            type: {
+                hidden: true
+            },
+            name: {
+                disabled: true
+            }
         }
     }
 });

@@ -33,6 +33,8 @@ var ControlManager = {
             for (var i = 0; i < this.addListeners.length; i++) {
                 this.addListeners[i].onControlAdded(ctrl);
             }
+            
+            ControlManager.setSelected(ctrl);
         }
         return this;
     },
@@ -136,6 +138,7 @@ var ControlManager = {
             case 'ticket-canvas': return new TicketCanvasControl(name);
             case 'control-selector': return new ControlSelectorControl(name);
             case 'control-properties': return new ControlPropertiesControl(name);
+            case 'data-tree': return new DataTreeControl(name);
         }
         return undefined;
     },
