@@ -141,6 +141,7 @@ var ControlManager = {
             case 'control-selector': return new ControlSelectorControl(name);
             case 'control-properties': return new ControlPropertiesControl(name);
             case 'data-tree': return new DataTreeControl(name);
+            case 'data-text': return new DataTextControl(name);
         }
         return undefined;
     },

@@ -8,3 +8,12 @@ String.prototype.toCamelCase = function() {
     }
     return rtr;
 };
+
+String.formatHtmlFromJson = function(obj) {
+    var $div = $('<div/>').addClass('json-obj');
+    $div.append($('<span/>').addClass('bracket').html('{'),$('<br/>').addClass('clearfix'));
+    $.each(obj, function(prop, val) {
+        
+    });
+    return $div.html();
+};

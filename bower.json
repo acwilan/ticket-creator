@@ -21,6 +21,6 @@
     "bootstrap": "~3.0.0",
     "select2": "~3.4.2",
     "select2-bootstrap-css": "~1.2.0",
-    "jstree": "~2.0.0-alpha"
+    "zeroclipboard": "~1.1.7"
   }
 }

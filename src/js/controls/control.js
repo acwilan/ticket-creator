@@ -27,14 +27,14 @@ this.Control = Base.extend({
         this._isMounted = false;
         this._parentDomHandle = undefined;
         
-        if (this._domHandle !== undefined) {
+        /*if (this._domHandle !== undefined) {
             this._domHandle.on('keydown', function(e) {
                 console.dir(e);
                 if (e.which === 46) { // hit delete key
                     //this
                 }
             });
-        }
+        }*/
         
         this._properties.type = type !== undefined ? type : 'Control';
         
@@ -358,5 +358,38 @@ this.Control = Base.extend({
             this._domHandle.remove();
             this._domHandle = undefined;
         }
+    },
+    formatAsHtml: function(level) {
+        var $maindiv = $('<div/>'),
+            $div = $('<div/>').addClass('control-source').appendTo($maindiv),
+            propStr = [], childStr = [], $obj = $('<div/>').css('margin-left','50px');
+        level = level || 0;
+        if (level > 0) {
+            $div.css('margin-left', '50px');
+        }
+    
+        $div.append($('<span/>').addClass('bracket').html('{'),$('<br/>').addClass('clearfix'),$obj);
+        
+        $.each(this._properties, function(prop, val) {
+            propStr.push('<span class="prop">"'+prop+'"</span>: <span class="val">"'+val+'"</span>');
+        });
+        $obj.append(propStr.join(',<br class="clearfix"/>'));
+        
+        if (this._children.length > 0) {
+            $obj.append(',<br class="clearfix"/><span class="prop">"children"</span>: <span class="bracket">[</span><br class="clearfix"/>');
+            $.each(this._children, function(index, child) {
+                if (child instanceof Control) {
+                    childStr.push(child.formatAsHtml(level+1));
+                }
+            });
+            $obj.append(childStr.join(',<br class="clearfix"/>')+'<br class="clearfix"/><span class="bracket">]</span>');
+        }
+        
+        $div.append($('<br/>').addClass('clearfix'),$('<span/>').addClass('bracket').html('}'));
+        
+        return $maindiv.html();
+    },
+    importFromString: function(jsonStr) {
+        var obj = $.parseJSON(jsonStr);
     }
 });

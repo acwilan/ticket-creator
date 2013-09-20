@@ -13,7 +13,7 @@ this.ControlSelectorControl = Control.extend({
         for (var name in ControlManager.controls) {
             if (name !== this.getName()) {
                 var ctrl = ControlManager.controls[name];
-                if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas') {
+                if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas' || ctrl.getType() === 'DataText') {
                     $('<option/>').attr('value',name).text(ctrl.getType()+'.'+name).appendTo(sel);
                     if (ControlManager.selected === undefined) {
                         ControlManager.setSelected(ctrl);
@@ -26,7 +26,7 @@ this.ControlSelectorControl = Control.extend({
         return sel;
     },
     onControlAdded: function(control) {
-        if (control instanceof Control && control.getName() !== this.getName() && (control.getType() === 'Text' || control.getType() === 'TicketCanvas')) {
+        if (control instanceof Control && control.getName() !== this.getName() && (control.getType() === 'Text' || control.getType() === 'TicketCanvas' || control.getType() === 'DataText')) {
             $('<option/>').attr('value',control.getName()).text(control.getType()+'.'+control.getName())
                 .appendTo(this._domHandle);
         }
@@ -52,7 +52,7 @@ this.ControlSelectorControl = Control.extend({
         }
     },
     onControlSelectionChange: function(ctrl) {
-        if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas') {
+        if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas' || ctrl.getType() === 'DataText') {
             this.externalSelectionChange = true;
             this._domHandle.val(ctrl.getName());
         }

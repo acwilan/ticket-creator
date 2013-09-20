@@ -13,7 +13,7 @@ this.ControlPropertiesControl = Control.extend({
         if (ctrl === undefined) {
             return;
         }
-        if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas') {
+        if (ctrl.getType() === 'Text' || ctrl.getType() === 'TicketCanvas' || ctrl.getType() === 'DataText') {
             var domObj = this._domHandle,
                 obj = this;
 
@@ -34,6 +34,8 @@ this.ControlPropertiesControl = Control.extend({
                             }).addClass('form-control').on('change', function(e) {
                                 if (ctrl[('set-'+name).toCamelCase()] !== undefined) {
                                     ctrl[('set-'+name).toCamelCase()]($(e.target).val());
+                                } else {
+                                    ctrl.setProperty(name, $(e.target).val());
                                 }
                             });
                     if (disabled) {
@@ -50,7 +52,7 @@ this.ControlPropertiesControl = Control.extend({
 
             if (ctrl.allowDelete) {
                 $('<div/>').addClass('btn-group pull-right').append(
-                    $('<button/>').addClass('btn btn-danger').text('Delete')
+                    $('<a/>').attr('href','#').addClass('btn btn-danger').text('Delete')
                 ).on('click', this.deleteControl).appendTo(domObj);
             }
         }
@@ -74,13 +76,24 @@ this.ControlPropertiesControl = Control.extend({
         text: {
             orientation: {
                 disabled: true
-            },
+            }/*,
             width: {
                 hidden: true
             },
             height: {
                 hidden: true
-            }
+            }*/
+        },
+        datatext: {
+            orientation: {
+                disabled: true
+            }/*,
+            width: {
+                hidden: true
+            },
+            height: {
+                hidden: true
+            }*/
         }
     },
     deleteControl: function(e) {
